@@ -319,11 +319,12 @@ def main():
                 if params.get('is_accompaniment'):
                     feed_dict_sampler[placeholder_c] = np.expand_dims(
                         sample_x[..., params['condition_track_idx']], -1)
-                if step < 3000:
-                    sess.run(
-                        sampler_op_no_pianoroll, feed_dict=feed_dict_sampler)
-                else:
-                    sess.run(sampler_op, feed_dict=feed_dict_sampler)
+                #if step < 3000:
+                #    sess.run(
+                #        sampler_op_no_pianoroll, feed_dict=feed_dict_sampler)
+                #else:
+                #sess.run(sampler_op, feed_dict=feed_dict_sampler)
+                sess.run(sampler_op, feed_dict=feed_dict_sampler)
 
             # Run evaluation
             if ((config['evaluate_steps'] > 0)
