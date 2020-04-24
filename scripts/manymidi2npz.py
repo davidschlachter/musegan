@@ -55,9 +55,14 @@ for filename in FILENAMES:
     pianoroll = pianoroll[:, 24:108]
 
     # Reshape and get the phrase pianorolls
-    pianoroll = pianoroll.reshape(-1, 4 * BEAT_RESOLUTION, 84, N_TRACKS)
-    results.append(np.concatenate(
-        [pianoroll[:-3], pianoroll[1:-2], pianoroll[2:-1], pianoroll[3:]], 1))
+    # https://docs.scipy.org/doc/numpy-1.14.2/reference/generated/numpy.ndarray.reshape.html#numpy.ndarray.reshape
+    # "One shape dimension can be -1. In this case, the value is inferred from the length of the array and remaining dimensions."
+    try:
+        pianoroll = pianoroll.reshape(-1, 4 * BEAT_RESOLUTION, 84, N_TRACKS)
+        pianoroll = pianoroll.reshape(-1, 4, 4 * BEAT_RESOLUTION, 84, N_TRACKS)
+        results.append(pianoroll)
+    except ValueError:
+        pass
 
 result = np.concatenate(results, 0)
 # NOTE: You might want to shuffle the training data here
